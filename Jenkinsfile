@@ -9,23 +9,21 @@ pipeline {
         }
         stage('Install dependencies') {
             steps {
-                // S'assurer que le bon environnement Python est utilisé
                 sh 'pip install -r requirements.txt'
             }
         }
         stage('Run tests') {
             steps {
-                // Exécuter les tests avec le rapport au format JUnit
+                // Exécute les tests et génère le rapport dans le dossier reports
                 sh 'pytest --junitxml=reports/results.xml tests/'
             }
         }
     }
     post {
         always {
-            // Publier les résultats des tests JUnit
-            junit 'reports/results.xml'  // Vérifier que le chemin est correct
-            // Archiver d'autres artefacts si nécessaire, ajuster selon tes besoins
-            archiveArtifacts artifacts: '**/*.py', allowEmptyArchive: true  // Exemple pour archiver tous les fichiers Python
+            // Met à jour le chemin pour pointer vers le dossier reports
+            junit 'reports/results.xml'
+            archiveArtifacts artifacts: '**/target/*.jar', allowEmptyArchive: true
         }
     }
 }
