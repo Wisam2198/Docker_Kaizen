@@ -2,3 +2,4 @@ requests==2.28.1
 pytest==8.3.3
 Flask==2.1.2
 Werkzeug==2.1.2
+pytest-junit==0.6.0

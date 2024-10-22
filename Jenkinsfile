@@ -9,19 +9,23 @@ pipeline {
         }
         stage('Install dependencies') {
             steps {
+                // S'assurer que le bon environnement Python est utilisé
                 sh 'pip install -r requirements.txt'
             }
         }
         stage('Run tests') {
             steps {
-                sh 'pytest tests/'
+                // Exécuter les tests avec le rapport au format JUnit
+                sh 'pytest --junitxml=reports/results.xml tests/'
             }
         }
     }
     post {
         always {
-            junit 'tests/*.xml'
-            archiveArtifacts artifacts: '**/target/*.jar', allowEmptyArchive: true
+            // Publier les résultats des tests JUnit
+            junit 'reports/results.xml'  // Vérifier que le chemin est correct
+            // Archiver d'autres artefacts si nécessaire, ajuster selon tes besoins
+            archiveArtifacts artifacts: '**/*.py', allowEmptyArchive: true  // Exemple pour archiver tous les fichiers Python
         }
     }
 }
