@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git url: 'https://ton-dépôt-git.git'
+                git url: 'https://github.com/Wisam2198/Docker_Kaizen.git'
             }
         }
         stage('Install dependencies') {
