@@ -1,24 +1,21 @@
-# Utilise une image Python de base
-FROM python:3.13-slim
+# Utiliser une image de base légère pour Python
+FROM python:3.9-slim
 
-# Installer les dépendances système
-RUN apt-get update && apt-get install -y \
-    build-essential
-
-# Copier le code de l'application dans le conteneur
+# Définir le répertoire de travail dans le conteneur
 WORKDIR /app
+
+# Copier le fichier de dépendances dans le conteneur
+COPY requirements.txt .
+
+# Installer les dépendances
+RUN pip install --no-cache-dir -r requirements.txt
+RUN mkdir -p /app/reports
+
+# Copier tout le code du projet dans le conteneur
 COPY . .
 
-# Créer et activer un environnement virtuel
-RUN python -m venv venv
-ENV PATH="/app/venv/bin:$PATH"
+# Exposer le port (si ton application a besoin d'un port, par exemple pour une API Flask)
+# EXPOSE 5000
 
-# Installer les dépendances Python
-RUN pip install --upgrade pip
-RUN pip install -r requirements.txt
-
-# Installer pytest
-RUN pip install pytest
-
-# Exécuter les tests avec pytest
-CMD ["pytest", "tests/"]
+# Spécifier la commande pour démarrer l'application
+CMD ["python", "conversion.py"]

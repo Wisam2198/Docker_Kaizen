@@ -7,22 +7,28 @@ pipeline {
                 git url: 'https://github.com/Wisam2198/Docker_Kaizen.git'
             }
         }
-        stage('Install dependencies') {
+        stage('Build Docker Image') {
             steps {
-                sh 'pip install -r requirements.txt'
-                sh 'pip install pytest'  // Installer pytest
+                script {
+                    // Construire l'image Docker en utilisant le Dockerfile
+                    sh 'docker build -t docker-kaizen .'
+                }
             }
         }
-        stage('Run tests') {
+        stage('Run Tests') {
             steps {
-                sh 'pytest tests/'
+                script {
+                    // Exécuter les tests à l'intérieur du conteneur Docker
+                    sh 'docker run --rm docker-kaizen pytest --junitxml=reports/results.xml tests/'
+                }
             }
         }
     }
     post {
         always {
-            junit 'tests/*.xml'
-            archiveArtifacts artifacts: '**/target/*.jar', allowEmptyArchive: true
+            // Publier les résultats des tests
+            junit 'reports/results.xml'
+            archiveArtifacts artifacts: 'reports/results.xml', allowEmptyArchive: true
         }
     }
 }
