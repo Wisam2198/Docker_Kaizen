@@ -10,19 +10,18 @@ pipeline {
         stage('Install dependencies') {
             steps {
                 sh 'pip install -r requirements.txt'
+                sh 'pip install pytest'  // Installer pytest
             }
         }
         stage('Run tests') {
             steps {
-                // Exécute les tests et génère le rapport dans le dossier reports
-                sh 'pytest --junitxml=reports/results.xml tests/'
+                sh 'pytest tests/'
             }
         }
     }
     post {
         always {
-            // Met à jour le chemin pour pointer vers le dossier reports
-            junit 'reports/results.xml'
+            junit 'tests/*.xml'
             archiveArtifacts artifacts: '**/target/*.jar', allowEmptyArchive: true
         }
     }
