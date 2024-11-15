@@ -21,7 +21,7 @@ def test_convert(mock_get, client):
     response = client.get("/convert?amount=100&from_currency=USD&to_currency=EUR")
     assert response.status_code == 200
     data = response.get_json()
-    assert data["converted_amount"] == 84.0  # 100 * 0.85
+    assert data["converted_amount"] == 85.0  # 100 * 0.85
 
 
 # Test pour une devise non valide
