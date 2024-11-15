@@ -1,4 +1,4 @@
-# Utiliser une image de base Python
+# Utiliser l'image officielle de Python 3.9
 FROM python:3.9-slim
 
 # Mettre à jour les paquets et installer pip (si nécessaire)
@@ -7,17 +7,14 @@ RUN apt-get update && apt-get install -y python3-pip
 # Définir le répertoire de travail dans le conteneur
 WORKDIR /app
 
-# Copier le fichier requirements.txt dans le conteneur
-COPY requirements.txt .
+# Copier les fichiers du projet dans le conteneur
+COPY . /app
 
-# Installer les dépendances du projet
-RUN pip3 install --no-cache-dir -r requirements.txt
+# Installer les dépendances
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Copier tout le code dans le conteneur
-COPY . .
+# Exposer le port 8080 (si nécessaire)
+EXPOSE 8080
 
-# Créer le dossier reports
-RUN mkdir -p /app/reports
-
-# Spécifier la commande pour démarrer l'application
-CMD ["python3", "conversion.py"]
+# Lancer l'application (si nécessaire)
+CMD ["python", "app.py"]
