@@ -25,8 +25,10 @@ pipeline {
                     // Exécuter les tests dans le conteneur avec un volume pour les rapports
                     sh '''
                     mkdir -p reports
-                    docker run --rm -v $(pwd)/reports:/app/reports ${DOCKER_IMAGE}:${BUILD_NUMBER} \
-                        pytest --junitxml=reports/results.xml tests/
+                    docker run --rm \
+                        -v $(pwd)/reports:/app/reports \
+                        ${DOCKER_IMAGE}:${BUILD_NUMBER} \
+                        pytest --junitxml=/app/reports/results.xml tests/
                     '''
                 }
             }

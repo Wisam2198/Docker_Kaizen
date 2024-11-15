@@ -1,21 +1,21 @@
-# Utiliser une image de base légère pour Python
 FROM python:3.9-slim
 
-# Définir le répertoire de travail dans le conteneur
+# Définir le répertoire de travail
 WORKDIR /app
 
-# Copier le fichier de dépendances dans le conteneur
+# Copier le fichier requirements.txt dans le conteneur
 COPY requirements.txt .
 
 # Installer les dépendances
 RUN pip install --no-cache-dir -r requirements.txt
+
+# Créer le dossier de rapports
 RUN mkdir -p /app/reports
 
-# Copier tout le code du projet dans le conteneur
+# Copier le code source dans l'image Docker
 COPY . .
 
-# Exposer le port (si ton application a besoin d'un port, par exemple pour une API Flask)
+# Exposer le port si nécessaire
 # EXPOSE 5000
 
-# Spécifier la commande pour démarrer l'application
 CMD ["python", "conversion.py"]
